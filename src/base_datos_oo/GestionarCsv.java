@@ -8,15 +8,14 @@ import java.util.List;
 
 public class GestionarCsv {
 
-    public List<ObjetosDb4o> leerCsv() {
+    public List<ObjetosDb4o> leerCsv(String file) {
 
         List<ObjetosDb4o> objetos = new ArrayList<>();
-        String csvFile = "Heroes.csv";
         String linea;
         String csvSplitBy = ";";
 
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
             linea = br.readLine();
             String[] encabezado = linea.split(csvSplitBy);
