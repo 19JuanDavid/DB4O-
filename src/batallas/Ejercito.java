@@ -76,7 +76,7 @@ public class Ejercito {
 
         String[] opciones = {"Crear ID para ejército", "Añadir infantería",
                 "Añadir caballería", "Añadir general", "Añadir elefante", "Añadir tigre",
-                "Consultar saldo ejército", "Eliminar unidad", "Salir y confirmar"};
+                "Consultar saldo ejército", "Consultar Base de datos", "Eliminar unidad", "Salir y confirmar"};
 
         do {
 
@@ -204,7 +204,12 @@ public class Ejercito {
                 case "g":
                     System.out.println(Message.SALDO_ACTUAL + getSaldoPeso());
                     break;
+
                 case "h":
+
+
+                    break;
+                case "i":
                     try {
                         if (!unidades.isEmpty()) {
                             System.out.println("Eliminar unidad del ejército: ");
@@ -222,7 +227,7 @@ public class Ejercito {
                     }
 
                     break;
-                case "i":
+                case "j":
                     try {
                         if (saldoPeso >= MIN_UNIDADES && hayGeneral) {
                             System.out.println(System.lineSeparator() + "Su Ejército está formado por: "
@@ -254,7 +259,7 @@ public class Ejercito {
                     System.out.println(Message.OPCION_INAVLIDA);
                     break;
             }
-        } while (!opcion.equals("i"));
+        } while (!opcion.equals("j"));
     }
 
     private void imprimirInfo(Componentes componente) {

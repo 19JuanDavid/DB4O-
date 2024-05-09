@@ -6,15 +6,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase para gestionar el Csv
+ */
+
 public class GestionarCsv {
 
     public List<ObjetosDb4o> leerCsv(String file) {
 
+        //Un ArrayList que se guardan los objetos condecorados
         List<ObjetosDb4o> objetos = new ArrayList<>();
         String linea;
         String csvSplitBy = ";";
 
-
+        //Leemos el fichero que registra cada columna con un indice
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
             linea = br.readLine();
@@ -25,6 +30,9 @@ public class GestionarCsv {
             int indiceTypeOfAction = 13;
             int indiceNameOfApproved = 23;
 
+
+            // Mientras lee cada columna si es diferente de null devuelve un true y me separa las columnas por un ;
+            // luego de eso crea un objeto(condecorados) en cada columna
             while ((linea = br.readLine()) != null) {
                 String[] columna = linea.split(csvSplitBy);
 
