@@ -4,6 +4,9 @@
  */
 package batallas;
 
+import base_datos_oo.ObjetosDb4o;
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
 import componentes.Componentes;
 import componentes.animales.Elefante;
 import componentes.animales.Tigre;
@@ -14,11 +17,14 @@ import excepciones.animales.MaxAnimalesException;
 import excepciones.batallas.*;
 import excepciones.personas.GeneralMinimoException;
 import excepciones.personas.MaxCapGeneralException;
+import componentes.animales.Heroes;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+
+import static base_datos_oo.ConexionDb40.bases;
 
 /**
  * <p>Clase que representa un ejército.</p>
@@ -75,7 +81,7 @@ public class Ejercito {
         String opcion;
 
         String[] opciones = {"Crear ID para ejército", "Añadir infantería",
-                "Añadir caballería", "Añadir general", "Añadir elefante", "Añadir tigre",
+                "Añadir caballería", "Añadir general", "Añadir Heroe",
                 "Consultar saldo ejército", "Consultar Base de datos", "Eliminar unidad", "Salir y confirmar"};
 
         do {
@@ -159,32 +165,11 @@ public class Ejercito {
                     }
 
                     break;
+
                 case "e":
                     try {
-                        if (((saldoPeso + Elefante.PESO_ELEFANTE) < MAX_PESO) && contadorAnimales < MAX_ANIMALES) {
-                            adicionarUnidad(new Elefante());
-                            imprimirInfo(unidades.getLast());
-                        } else {
-                            if (saldoPeso == MAX_PESO) {
-                                throw new MaxCapPesoEjercitoException(Message.MAX_CAP_PESO_EJERCITO);
-                            } else if (MAX_ANIMALES == contadorAnimales) {
-                                throw new MaxAnimalesException(Message.MAX_ANIMALES);
-                            } else {
-                                System.out.println(Message.UNIDAD_SUPERA_PESO + " " + Message.PESO_DISPONIBLE
-                                        + (MAX_PESO - saldoPeso));
-                            }
-                        }
-                    } catch (MaxCapPesoEjercitoException e) {
-
-                    } catch (MaxAnimalesException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    break;
-                case "f":
-                    try {
-                        if ((saldoPeso + Tigre.PESO_TIGRE) < MAX_PESO && contadorAnimales < MAX_ANIMALES) {
-                            adicionarUnidad(new Tigre());
+                        if ((saldoPeso + Heroes.PESO_TIGRE) < MAX_PESO && contadorAnimales < MAX_ANIMALES) {
+                            adicionarUnidad(new Heroes());
                             imprimirInfo(unidades.getLast());
                         } else {
                             if (saldoPeso == MAX_PESO) {
@@ -201,15 +186,27 @@ public class Ejercito {
                     }
 
                     break;
-                case "g":
+                case "f":
                     System.out.println(Message.SALDO_ACTUAL + getSaldoPeso());
                     break;
 
-                case "h":
+                case "g":
 
+                    ObjectContainer bd = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "HeroesBd");
+
+                    // Llamar al método para verificar si la base de datos está vacía
+                    boolean vacia = bases(bd);
+
+                    if (vacia){
+                        System.out.println("La base de datos está vacía");
+                    } else {
+                        System.out.println("La base de datos contiene objetos");
+                    }
+
+                    bd.close();
 
                     break;
-                case "i":
+                case "h":
                     try {
                         if (!unidades.isEmpty()) {
                             System.out.println("Eliminar unidad del ejército: ");
@@ -227,7 +224,7 @@ public class Ejercito {
                     }
 
                     break;
-                case "j":
+                case "i":
                     try {
                         if (saldoPeso >= MIN_UNIDADES && hayGeneral) {
                             System.out.println(System.lineSeparator() + "Su Ejército está formado por: "
@@ -259,7 +256,7 @@ public class Ejercito {
                     System.out.println(Message.OPCION_INAVLIDA);
                     break;
             }
-        } while (!opcion.equals("j"));
+        } while (!opcion.equals("i"));
     }
 
     private void imprimirInfo(Componentes componente) {
@@ -311,7 +308,7 @@ public class Ejercito {
             unidades.add(componentes);
             saldoPeso += componentes.getPeso();
             hayGeneral = true;
-        } else if (componentes instanceof Elefante || componentes instanceof Tigre) {
+        } else if (componentes instanceof Elefante || componentes instanceof Heroes) {
             unidades.add(componentes);
             saldoPeso += componentes.getPeso();
             contadorAnimales++;
@@ -325,7 +322,7 @@ public class Ejercito {
                 if (unidad.getNombre().equalsIgnoreCase(nombreUnidad)) {
                     if (unidad instanceof General) {
                         hayGeneral = false;
-                    } else if (unidad instanceof Elefante || unidad instanceof Tigre) {
+                    } else if (unidad instanceof Elefante || unidad instanceof Heroes) {
                         contadorAnimales--;
                     }
 
@@ -349,7 +346,9 @@ public class Ejercito {
             System.out.println(unidad);
         }
     }
-
+    private static boolean bases(ObjectContainer bd) {
+        return bd.queryByExample(ObjetosDb4o.class).isEmpty();
+    }
     private void asignarNombre(String nombre) {
         try {
             if (!nombres.contains(nombre)) {
