@@ -4,12 +4,12 @@
  */
 package batallas;
 
-import base_datos_oo.ObjetosDb4o;
+import base_datos_oo.Condecorados;
+import base_datos_oo.ConsultarDb4o;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import componentes.Componentes;
 import componentes.animales.Elefante;
-import componentes.animales.Tigre;
 import componentes.personas.Caballeria;
 import componentes.personas.General;
 import componentes.personas.Infanteria;
@@ -19,12 +19,7 @@ import excepciones.personas.GeneralMinimoException;
 import excepciones.personas.MaxCapGeneralException;
 import componentes.animales.Heroes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-
-import static base_datos_oo.ConexionDb40.bases;
+import java.util.*;
 
 /**
  * <p>Clase que representa un ejército.</p>
@@ -41,6 +36,7 @@ public class Ejercito {
     private static final List<String> nombres = new ArrayList<>();
     private final ArrayList<Componentes> unidades = new ArrayList<>();
     private int contadorAnimales = 0;
+    private List<General> aaaa= ConsultarDb4o.consultarDb4o();
     private boolean hayGeneral = false;
     private int ataque;
     private int defensa;
@@ -151,7 +147,10 @@ public class Ejercito {
                 case "d":
                     try {
                         if (((saldoPeso + General.PESO_GENERAL) < MAX_PESO) && !hayGeneral) {
-                            adicionarUnidad(new General());
+
+                            Random random = new Random();
+                            General generalAleatorio = aaaa.get(random.nextInt(aaaa.size()));
+                            adicionarUnidad(generalAleatorio);
                             imprimirInfo(unidades.getLast());
                         } else {
                             if (saldoPeso == MAX_PESO) {
@@ -347,7 +346,7 @@ public class Ejercito {
         }
     }
     private static boolean bases(ObjectContainer bd) {
-        return bd.queryByExample(ObjetosDb4o.class).isEmpty();
+        return bd.queryByExample(Condecorados.class).isEmpty();
     }
     private void asignarNombre(String nombre) {
         try {

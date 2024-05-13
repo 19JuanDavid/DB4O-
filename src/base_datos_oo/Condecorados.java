@@ -1,6 +1,6 @@
 package base_datos_oo;
 
-public class ObjetosDb4o {
+public class Condecorados {
 
     private String lastName;
     private String firstName;
@@ -8,7 +8,7 @@ public class ObjetosDb4o {
     private String typOfAction;
     private String nameOfApprov;
 
-    public ObjetosDb4o(String lastName, String firstName, String offiOrEnli, String typOfAction, String nameOfApprov) {
+    public Condecorados(String lastName, String firstName, String offiOrEnli, String typOfAction, String nameOfApprov) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.offiOrEnli = offiOrEnli;
@@ -58,12 +58,12 @@ public class ObjetosDb4o {
 
     @Override
     public String toString() {
-        return "ObjetosDb4o{" +
+        return "Condecorados{" +
                 "lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", offiOrEnli='" + offiOrEnli + '\'' +
                 ", typOfAction='" + typOfAction + '\'' +
-                ", award='" + nameOfApprov + '\'' +
+                ", nameOfApprov='" + nameOfApprov + '\'' +
                 '}';
     }
 }

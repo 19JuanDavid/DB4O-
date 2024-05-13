@@ -12,29 +12,26 @@ import java.util.List;
 
 public class ConexionDb40 {
 
-    public static void conexionDb40(List<ObjetosDb4o> objetos) {
+    public static void conexionDb40(List<Condecorados> objetos) {
 
         //Creamos una base de datos con las columnas que hemos sacado de un fichero CSV
-        ObjectContainer bd = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "HeroesBd");
-        ObjetosDb4o condecorados = new ObjetosDb4o(null, null, null, null, null);
-        ObjectSet conde = bd.queryByExample(condecorados);
+        ObjectContainer bd = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "HeroesBD");
+        Condecorados condecorados = new Condecorados(null, null, null, null, null);
+        ObjectSet<Condecorados> conde = bd.queryByExample(condecorados);
 
         while (conde.hasNext()) {
             System.out.println(conde.next());
         }
 
-        //Bucle que guarda un objeto en la base de datos luego de haberlos creados tomandolas de la columna anterior
-        try {
-
-            for (ObjetosDb4o objeto : objetos) {
-                bd.store(objeto);
-            }
-        } finally {
-
-            bd.close();
+        //Bucle que guarda un objeto en la base de datos luego de haberlos creado
+        for (Condecorados objeto : objetos) {
+            bd.store(objeto);
         }
+            bd.close();
 
-        bd = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "HeroesBd");
+
+
+      bd = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "HeroesBD");
 
         // Llamar al método para verificar si la base de datos está vacía
         boolean vacia = bases(bd);
@@ -48,7 +45,7 @@ public class ConexionDb40 {
         }
 
     public static boolean bases(ObjectContainer bd) {
-        return bd.queryByExample(ObjetosDb4o.class).isEmpty();
+        return bd.queryByExample(Condecorados.class).isEmpty();
     }
 
 }

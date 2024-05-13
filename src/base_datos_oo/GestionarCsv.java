@@ -12,10 +12,12 @@ import java.util.List;
 
 public class GestionarCsv {
 
-    public List<ObjetosDb4o> leerCsv(String file) {
+    private static final List<Condecorados> objetos = new ArrayList<>();
+
+    public static List<Condecorados> leerCsv(String file) {
 
         //Un ArrayList que se guardan los objetos condecorados
-        List<ObjetosDb4o> objetos = new ArrayList<>();
+
         String linea;
         String csvSplitBy = ";";
 
@@ -36,7 +38,7 @@ public class GestionarCsv {
             while ((linea = br.readLine()) != null) {
                 String[] columna = linea.split(csvSplitBy);
 
-                ObjetosDb4o objeto = new ObjetosDb4o(
+                Condecorados objeto = new Condecorados(
                         columna[indiceLastName].trim(),
                         columna[indiceFirstName].trim(),
                         columna[indiceOfficerOrEnlisted].trim(),
@@ -49,7 +51,11 @@ public class GestionarCsv {
         } catch (IOException e) {
             e.printStackTrace();
         }
-            return objetos;
+        return objetos;
 
-        }
     }
+
+    public static List<Condecorados> getObjetos() {
+        return objetos;
+    }
+}
