@@ -18,8 +18,10 @@ import excepciones.batallas.*;
 import excepciones.personas.GeneralMinimoException;
 import excepciones.personas.MaxCapGeneralException;
 import componentes.animales.Heroes;
-
 import java.util.*;
+import static base_datos_oo.ConsultarDb4o.consultaHeroe;
+import static base_datos_oo.ConsultarDb4o.verGeneralganador;
+
 
 /**
  * <p>Clase que representa un ejército.</p>
@@ -36,7 +38,8 @@ public class Ejercito {
     private static final List<String> nombres = new ArrayList<>();
     private final ArrayList<Componentes> unidades = new ArrayList<>();
     private int contadorAnimales = 0;
-    private List<General> aaaa= ConsultarDb4o.consultarDb4o();
+    private List<General> sacarGen = ConsultarDb4o.consultarDb4o();
+    private List<Heroes> sacarHeroes = consultaHeroe();
     private boolean hayGeneral = false;
     private int ataque;
     private int defensa;
@@ -78,7 +81,7 @@ public class Ejercito {
 
         String[] opciones = {"Crear ID para ejército", "Añadir infantería",
                 "Añadir caballería", "Añadir general", "Añadir Heroe",
-                "Consultar saldo ejército", "Consultar Base de datos", "Eliminar unidad", "Salir y confirmar"};
+                "Consultar saldo ejército", "Consultar Base de datos", "Eliminar unidad", "Salir y confirmar" ,"Top Score"};
 
         do {
 
@@ -147,9 +150,8 @@ public class Ejercito {
                 case "d":
                     try {
                         if (((saldoPeso + General.PESO_GENERAL) < MAX_PESO) && !hayGeneral) {
-
-                            Random random = new Random();
-                            General generalAleatorio = aaaa.get(random.nextInt(aaaa.size()));
+                            Random generalRandom = new Random();
+                            General generalAleatorio = sacarGen.get(generalRandom.nextInt(sacarGen.size()));
                             adicionarUnidad(generalAleatorio);
                             imprimirInfo(unidades.getLast());
                         } else {
@@ -167,8 +169,10 @@ public class Ejercito {
 
                 case "e":
                     try {
-                        if ((saldoPeso + Heroes.PESO_TIGRE) < MAX_PESO && contadorAnimales < MAX_ANIMALES) {
-                            adicionarUnidad(new Heroes());
+                        if ((saldoPeso + Heroes.PESO_HEROE) < MAX_PESO && contadorAnimales < MAX_ANIMALES) {
+                            Random Heroerandom = new Random();
+                            Heroes HeroeAleatorio = sacarHeroes.get(Heroerandom.nextInt(sacarHeroes.size()));
+                            adicionarUnidad(HeroeAleatorio);
                             imprimirInfo(unidades.getLast());
                         } else {
                             if (saldoPeso == MAX_PESO) {
@@ -183,7 +187,6 @@ public class Ejercito {
                     } catch (MaxAnimalesException | MaxCapPesoEjercitoException e) {
                         System.out.println(e.getMessage());
                     }
-
                     break;
                 case "f":
                     System.out.println(Message.SALDO_ACTUAL + getSaldoPeso());
@@ -224,13 +227,13 @@ public class Ejercito {
 
                     break;
                 case "i":
+
                     try {
                         if (saldoPeso >= MIN_UNIDADES && hayGeneral) {
                             System.out.println(System.lineSeparator() + "Su Ejército está formado por: "
                                     + System.lineSeparator());
 
                             informacionEjercito();
-
                             actualizarEjercito();
                             break;
                         }
@@ -244,6 +247,8 @@ public class Ejercito {
                         } else {
                             throw new GeneralMinimoException(Message.GENERAL_MINIMO);
                         }
+
+
                     } catch (EjercitoNombreException | UnidadMinimaException | GeneralMinimoException e) {
                         System.out.println(e.getMessage());
                     }
@@ -253,6 +258,9 @@ public class Ejercito {
                     break;
                 default:
                     System.out.println(Message.OPCION_INAVLIDA);
+                    break;
+                case "j":
+                    verGeneralganador();
                     break;
             }
         } while (!opcion.equals("i"));
@@ -321,7 +329,7 @@ public class Ejercito {
                 if (unidad.getNombre().equalsIgnoreCase(nombreUnidad)) {
                     if (unidad instanceof General) {
                         hayGeneral = false;
-                    } else if (unidad instanceof Elefante || unidad instanceof Heroes) {
+                    } else if (unidad instanceof Heroes) {
                         contadorAnimales--;
                     }
 
@@ -360,4 +368,18 @@ public class Ejercito {
             System.out.println(e.getMessage());
         }
     }
+
+
+    public General sacarGenGanador() {
+        for (Componentes unidad : unidades) {
+            if (unidad instanceof General) {
+                return (General) unidad;
+            }
+        }
+        return null;
+    }
+
+
+
+
 }

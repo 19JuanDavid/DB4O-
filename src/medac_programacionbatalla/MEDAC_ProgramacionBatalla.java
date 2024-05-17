@@ -11,8 +11,9 @@ import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
 
-import static base_datos_oo.ConsultarDb4o.consultaHeroe;
-import static base_datos_oo.ConsultarDb4o.verbbdd;
+import static base_datos_oo.ConexionDb40.conexionDb40;
+import static base_datos_oo.ConsultarDb4o.*;
+import static base_datos_oo.GestionarCsv.leerCsv;
 
 
 /**
@@ -25,13 +26,11 @@ public class MEDAC_ProgramacionBatalla {
      */
     public static void main(String[] args) {
 
-      //  ConsultarDb4o.consultarDb4o();
+    // Profesor cuando borres la bbdd y quieras volver a llenar la bbdd ejecuta este metodo
+    //  conexionDb40(leerCsv("Heroes.csv"));
 
-    //        GestionarCsv.leerCsv("./Heroes.csv");
-    //       ConexionDb40.conexionDb40(GestionarCsv.getObjetos());
-  // ConsultarDb4o.consultarDb4o();
-        consultaHeroe();
-      //  Batalla batalla = new Batalla();
+     Batalla batalla = new Batalla();
+      //  vergeneralganador();
 
         }
     }

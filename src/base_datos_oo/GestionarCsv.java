@@ -12,11 +12,11 @@ import java.util.List;
 
 public class GestionarCsv {
 
+    //Un ArrayList que se guardan los objetos condecorados
     private static final List<Condecorados> objetos = new ArrayList<>();
 
     public static List<Condecorados> leerCsv(String file) {
 
-        //Un ArrayList que se guardan los objetos condecorados
 
         String linea;
         String csvSplitBy = ";";

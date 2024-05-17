@@ -4,8 +4,13 @@
  */
 package batallas;
 
+import componentes.personas.General;
+import componentes.personas.TopScore;
+
 import java.util.ArrayList;
 import java.util.Random;
+
+import static base_datos_oo.ConsultarDb4o.guardarganador;
 
 /**
  * <p>Clase que representa una batalla entre dos ejércitos.</p>
@@ -57,12 +62,26 @@ public class Batalla {
                 }
 
                 if (chequearGanador()) {
+                    Ejercito ejercitoGanador = getGanador();
+                    General generalGanador = ejercitoGanador.sacarGenGanador();
                     if (getGanador() == ejercito1) {
                         System.out.println(System.lineSeparator() + Message.EJERCITO_GANADOR +
                                 ejercito1.getNombre());
+                        TopScore ganadortop= new TopScore();
+                        ganadortop.setAtaque(generalGanador.getAtaque());
+                        ganadortop.setNombre(generalGanador.getNombre());
+                        ganadortop.setDefensa(generalGanador.getDefensa());
+                        ganadortop.setSalud(generalGanador.getSalud());
+                        guardarganador(ganadortop);
                     } else {
                         System.out.println(System.lineSeparator() + Message.EJERCITO_GANADOR +
                                 ejercito2.getNombre());
+                        TopScore ganadortop2= new TopScore();
+                        ganadortop2.setAtaque(generalGanador.getAtaque());
+                        ganadortop2.setNombre(generalGanador.getNombre());
+                        ganadortop2.setDefensa(generalGanador.getDefensa());
+                        ganadortop2.setSalud(generalGanador.getSalud());
+                        guardarganador(ganadortop2);
                     }
 
                     break;

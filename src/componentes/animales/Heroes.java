@@ -4,12 +4,12 @@ import java.util.List;
 
 public class Heroes extends Animal{
 
-    public static final int PESO_TIGRE = 5;
+    public static final int PESO_HEROE = 5;
 
     public Heroes() {
         super();
         setMultiplicador(1.5f);
-        setPeso(PESO_TIGRE);
+        setPeso(PESO_HEROE);
 
         List<Integer> atributos = generarAtributos(150);
         setAtaque((int) Math.ceil(atributos.get(0) * getMultiplicador()));
